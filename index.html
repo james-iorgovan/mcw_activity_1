@@ -13,8 +13,9 @@
   <style>
     body {margin: 0;}
     :root {
-      --mdc-theme-primary: #0400ff;
+      --mdc-theme-primary: #D50032;
     }
+    .template {display:none;}
   </style>
 
 
@@ -58,6 +59,11 @@
 <div class="mdc-drawer-app-content" id="content">
   <h2>Routes</h2>
   <div></div>
+  <ul class="mdc-list" id="routes">
+  <li class="mdc-list-item template">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  </ul>
 </div>
     <script>
       window.mdc.autoInit();
@@ -83,17 +89,15 @@
     <script>
       let corsAnywhere = "https://cors-anywhere.herokuapp.com/";
       let key="97e61f6f396344fba2d0433098ae1f38";
-      let route = "red";
+      let route = "blue";
       let endpoint = "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx?outputType=JSON&key=" + key;
       
-
       let routesURL = corsAnywhere + endpoint + 
       "&rt=" + route;
       
 
       getRoutes = () => {
         $.get(routesURL, displayRoutes)
-
       };
 
 
@@ -106,9 +110,18 @@
 
         let routes = data["ctatt"]["route"][0]["train"];
 
+        let template = $("ul#routes li.template");
+        
+        
         $.each(routes, function(i,v) {
-          console.log(v.nextStaNm);
-          $("#content div").append(v.nextStaNm + "<br>");
+          let clone = template.clone();
+          clone.find("span").text(v.nextStaNm);
+          clone.removeClass("template");
+          $("ul#routes").append(clone);
+          // console.log(clone);
+
+          // console.log(v.nextStaNm);
+          // $("#content div").append(v.nextStaNm + "<br>");
         });
 
 
